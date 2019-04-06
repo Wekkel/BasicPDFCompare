@@ -17,30 +17,35 @@ namespace BasicPDFCompare
                 {
                     Console.WriteLine("you did not provide arguments to the executable");
                     Console.WriteLine("please provide 3 arguments ([source_file1] [source2_file] [destination_file]");
+                    Console.WriteLine("Press key to exit");
                     Console.ReadLine();
                 }
                 else if (args.Length == 1)
                 {
                     Console.WriteLine("you only provided 1 argument to the executable");
                     Console.WriteLine("please provide 3 arguments ([source_file1] [source2_file] [destination_file]");
+                    Console.WriteLine("Press key to exit");
                     Console.ReadLine();
                 }
                 else if (args.Length == 2)
                 {
                     Console.WriteLine("you only provided 2 arguments to the executable");
                     Console.WriteLine("please provide 3 arguments ([source_file1] [source2_file] [destination_file]");
+                    Console.WriteLine("Press key to exit");
                     Console.ReadLine();
                 }
                 else if (args.Length == 3)
                 {
                     Console.WriteLine("you provided 3 arguments to the executable");
                     Console.WriteLine("Thanks. The rest of the program is still under construction");
+                    Console.WriteLine("Press key to exit");
                     Console.ReadLine();
                 }
                 else if (args.Length > 3)
                 {
                     Console.WriteLine("you provided more than 3 arguments to the executable");
                     Console.WriteLine("please provide 3 arguments: [source_file1] [source2_file] [destination_file]");
+                    Console.WriteLine("Press key to exit");
                     Console.ReadLine();
                 }
             }
