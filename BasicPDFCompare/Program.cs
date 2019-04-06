@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using DiffMatchPatch;
 
 namespace BasicPDFCompare
 {
@@ -48,12 +49,34 @@ namespace BasicPDFCompare
 
         private static void ComparePDF(string source_file1, string source_file2, string destination_file)
         {
-            Console.WriteLine("You have entered the following arguments:");
-            Console.WriteLine("argument 1 (source file 1): " + source_file1);
-            Console.WriteLine("argument 2 (source file 2): " + source_file2);
-            Console.WriteLine("argument 3 (destination file): " + destination_file);
-            Console.WriteLine("Press a key to exit");
-            Console.ReadLine();
+            //set up compare objects and perform compare
+            diff_match_patch dmp = new diff_match_patch();
+            List<Diff> diff = dmp.diff_main(source_file1, source_file2);
+
+            //convert compare to HTML and output this file (saving) as HMTL file
+            string _HTMLString = dmp.diff_prettyHtml(diff);
+            WriteHTMLFile(_HTMLString);
+                    
         }
+
+        private static void PDF2Text()
+        {
+        }
+
+        private static void WriteHTMLFile(string _HTMLString)
+        {
+            string appPath = System.Reflection.Assembly.GetExecutingAssembly().Location;
+            Console.WriteLine(appPath);
+            var directory = System.IO.Path.GetDirectoryName(appPath);
+
+            string filePath = directory + @"\" + "Result.html";
+            System.IO.StreamWriter s = new System.IO.StreamWriter(filePath, false);
+
+            s.WriteLine(_HTMLString);
+            s.Close();
+           Console.WriteLine("Klaar met wegschrijven HTML bestand!");
+        }
+
+
     }
-    }
+}
