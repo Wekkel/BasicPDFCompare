@@ -78,16 +78,31 @@ namespace BasicPDFCompare
 
             //convert compare to HTML and output this file (saving) as HMTL file
             string _HTMLString = dmp.diff_prettyHtml(diff);
-            WriteHTMLFile(_HTMLString);
 
-            //convert compare to HTML and output this file (saving) as PDF file
-            //WriteHTMLtoPDF(_HTMLString);
-            //WriteHTMLtoPDF(_HTMLString);
-            WriteHTMLtoPDF3(_HTMLString);
+            _HTMLString = CleanUpHTMLstring(_HTMLString);
+
+           
+
+           
+            //write HTML file to disk
+            WriteHTMLFile(_HTMLString);
+            
+            WriteHTMLtoPDF(_HTMLString);
 
         }
 
-        public static string PDF2String(string filePath)
+        private static string CleanUpHTMLstring(string _HTMLString)
+        {
+            //code to add a CSS style to the head of the HTML file and remove style elements from the individual HTML elements
+            //this is done to ensure that the color sheme for the inserst and deletions in the markup show in the PDF output
+            _HTMLString = "<head><style>del{ background-color: #ffe6e6; }ins{ background-color :#e6ffe6; }</style></head>" + _HTMLString;
+            _HTMLString = _HTMLString.Replace("<del style=\"background:#ffe6e6;\">", "<del>");
+            _HTMLString = _HTMLString.Replace("<ins style=\"background:#e6ffe6;\">", "<ins>");
+
+            return _HTMLString;
+        }
+
+        private static string PDF2String(string filePath)
         {
             StringBuilder strBuilder = new StringBuilder();
             try
@@ -122,110 +137,8 @@ namespace BasicPDFCompare
             s.Close();
            Console.WriteLine("Ready writing HTML file to disk!");
         }
-
+        
         private static void WriteHTMLtoPDF(string _HTMLstring)
-        {
-            //Create a byte array that will eventually hold our final PDF
-            Byte[] bytes;
-
-            //Boilerplate iTextSharp setup here
-            //Create a stream that we can write to, in this case a MemoryStream
-            using (var ms = new MemoryStream())
-            {
-
-                //Create an iTextSharp Document which is an abstraction of a PDF but **NOT** a PDF
-                using (var doc = new Document())
-                {
-
-                    //Create a writer that's bound to our PDF abstraction and our stream
-                    using (var writer = PdfWriter.GetInstance(doc, ms))
-                    {
-
-                        //Open the document for writing
-                        doc.Open();
-
-                        //Our sample HTML and CSS
-                        var example_html = _HTMLstring;
-                           
-                        /**************************************************
-                         * Example #1                                     *
-                         *                                                *
-                         * Use the built-in HTMLWorker to parse the HTML. *
-                         * Only inline CSS is supported.                  *
-                         * ************************************************/
-
-                        //Create a new HTMLWorker bound to our document
-                        using (var htmlWorker = new iTextSharp.text.html.simpleparser.HTMLWorker(doc))
-                        {
-
-                            //HTMLWorker doesn't read a string directly but instead needs a TextReader (which StringReader subclasses)
-                            using (var sr = new StringReader(example_html))
-                            {
-
-                                //Parse the HTML
-                                htmlWorker.Parse(sr);
-                            }
-                        }
-
-                     
-
-                        doc.Close();
-                    }
-                }
-
-                //After all of the PDF "stuff" above is done and closed but **before** we
-                //close the MemoryStream, grab all of the active bytes from the stream
-                bytes = ms.ToArray();
-            }
-
-            //Now we just need to do something with those bytes.
-            //Here I'm writing them to disk but if you were in ASP.Net you might Response.BinaryWrite() them.
-            //You could also write the bytes to a database in a varbinary() column (but please don't) or you
-            //could pass them to another function for further PDF processing.
-
-            string appPath = System.Reflection.Assembly.GetExecutingAssembly().Location;
-            //Console.WriteLine(appPath);
-            var directory = System.IO.Path.GetDirectoryName(appPath);
-
-            string filePath = directory + @"\" + "Result.pdf";
-                            
-            System.IO.File.WriteAllBytes(filePath, bytes);
-
-            Console.WriteLine("Ready writing PDF file to disk!");
-        }
-
-        private static void WriteHTMLtoPDF2(string _HTMLstring)
-        {
-            StringReader sr = new StringReader(_HTMLstring);
-
-            Document pdfDoc = new Document(PageSize.A4, 10f, 10f, 10f, 0f);
-            HTMLWorker htmlparser = new HTMLWorker(pdfDoc);
-            using (MemoryStream memoryStream = new MemoryStream())
-            {
-                PdfWriter writer = PdfWriter.GetInstance(pdfDoc, memoryStream);
-                pdfDoc.Open();
-
-                htmlparser.Parse(sr);
-                pdfDoc.Close();
-
-                byte[] bytes = memoryStream.ToArray();
-                memoryStream.Close();
-
-                string appPath = System.Reflection.Assembly.GetExecutingAssembly().Location;
-                //Console.WriteLine(appPath);
-                var directory = System.IO.Path.GetDirectoryName(appPath);
-
-                string filePath = directory + @"\" + "Result.pdf";
-
-                System.IO.File.WriteAllBytes(filePath, bytes);
-
-                Console.WriteLine("Ready writing PDF file to disk!");
-
-            }
-                       
-        }
-
-        private static void WriteHTMLtoPDF3(string _HTMLstring)
         {
 
             PdfSharp.Pdf.PdfDocument pdf = PdfGenerator.GeneratePdf(_HTMLstring, PdfSharp.PageSize.A4);
