@@ -8,6 +8,8 @@ using iTextSharp.text.pdf;
 using iTextSharp.text.pdf.parser;
 using iTextSharp.text;
 using Path = iTextSharp.text.pdf.parser.Path;
+using iTextSharp.text.html.simpleparser;
+using TheArtOfDev.HtmlRenderer.PdfSharp;
 
 namespace BasicPDFCompare
 {
@@ -79,7 +81,9 @@ namespace BasicPDFCompare
             WriteHTMLFile(_HTMLString);
 
             //convert compare to HTML and output this file (saving) as PDF file
-            WriteHTMLtoPDF(_HTMLString);
+            //WriteHTMLtoPDF(_HTMLString);
+            //WriteHTMLtoPDF(_HTMLString);
+            WriteHTMLtoPDF3(_HTMLString);
 
         }
 
@@ -142,8 +146,7 @@ namespace BasicPDFCompare
 
                         //Our sample HTML and CSS
                         var example_html = _HTMLstring;
-                            var example_css = @".headline{font-size:200%}";
-
+                           
                         /**************************************************
                          * Example #1                                     *
                          *                                                *
@@ -190,5 +193,56 @@ namespace BasicPDFCompare
 
             Console.WriteLine("Ready writing PDF file to disk!");
         }
+
+        private static void WriteHTMLtoPDF2(string _HTMLstring)
+        {
+            StringReader sr = new StringReader(_HTMLstring);
+
+            Document pdfDoc = new Document(PageSize.A4, 10f, 10f, 10f, 0f);
+            HTMLWorker htmlparser = new HTMLWorker(pdfDoc);
+            using (MemoryStream memoryStream = new MemoryStream())
+            {
+                PdfWriter writer = PdfWriter.GetInstance(pdfDoc, memoryStream);
+                pdfDoc.Open();
+
+                htmlparser.Parse(sr);
+                pdfDoc.Close();
+
+                byte[] bytes = memoryStream.ToArray();
+                memoryStream.Close();
+
+                string appPath = System.Reflection.Assembly.GetExecutingAssembly().Location;
+                //Console.WriteLine(appPath);
+                var directory = System.IO.Path.GetDirectoryName(appPath);
+
+                string filePath = directory + @"\" + "Result.pdf";
+
+                System.IO.File.WriteAllBytes(filePath, bytes);
+
+                Console.WriteLine("Ready writing PDF file to disk!");
+
+            }
+                       
+        }
+
+        private static void WriteHTMLtoPDF3(string _HTMLstring)
+        {
+
+            PdfSharp.Pdf.PdfDocument pdf = PdfGenerator.GeneratePdf(_HTMLstring, PdfSharp.PageSize.A4);
+
+            string appPath = System.Reflection.Assembly.GetExecutingAssembly().Location;
+            //Console.WriteLine(appPath);
+            var directory = System.IO.Path.GetDirectoryName(appPath);
+
+            string filePath = directory + @"\" + "Result.pdf";
+
+           
+            pdf.Save(filePath);
+
+            Console.WriteLine("Ready writing PDF file to disk!");
+
+
+        }
+
     }
 }
