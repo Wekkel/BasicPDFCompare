@@ -2,6 +2,7 @@
 Basic compare PDF (text) and provide output as PDF file
 
 What does it do?
+
 Compare 2 PDF files and save the result as a PDF file. The compare is limited to flat text only.
 
 The executable takes 3 arguments:
@@ -14,9 +15,11 @@ Example:
 >BasicPDFCompare.exe "c:\test\source1.pdf" "c:\test\source2.pdf" "c:\test\result.pdf"
 
 Why?
+
 I needed a straight forward way to (Powershell) batch compare (text only) a couple of PDF files and did not find a suitable solution online.
 
-How
+How?
+
 The source PDF files are read for text content with iTextSharp. 
 
 The texts found in both sourcefile PDFs is compared with GoogleDiffMatchPatch (default settings). 
@@ -28,9 +31,11 @@ The HTML is cleaned on a couple of points so that conversion into PDF does not r
 Subsequently, the HTML is converted into and saved as a PDF file with HTML Renderer and PdfSharp (could not use iTextSharp because the color coding gets lost along the way).
 
 License
+
 The code is licensed in accordance with the  mandatory requirements of the licenses applicable to the software referenced in this code (i.e., iTextSharp, PdfSharp, HtmlRenderer and GoogleDiffMatchPatch).
 
 Desired options
+
 The command line options could be updated for robustness and flexibility:
 -more input checks, like: does source file exist, does output filepath folder exists, batch options (select entire folder)
 -default options (e.g., write output file to application path if not specified at command line)
