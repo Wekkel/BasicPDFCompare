@@ -81,13 +81,13 @@ namespace BasicPDFCompare
 
             _HTMLString = CleanUpHTMLstring(_HTMLString);
 
-           
 
-           
-            //write HTML file to disk
-            WriteHTMLFile(_HTMLString);
-            
-            WriteHTMLtoPDF(_HTMLString);
+
+
+            ////write HTML file to disk
+            //WriteHTMLFile(_HTMLString);
+
+            WriteHTMLtoPDF(_HTMLString, destination_file);
 
         }
 
@@ -138,19 +138,13 @@ namespace BasicPDFCompare
            Console.WriteLine("Ready writing HTML file to disk!");
         }
         
-        private static void WriteHTMLtoPDF(string _HTMLstring)
+        private static void WriteHTMLtoPDF(string _HTMLstring, string destination_file)
         {
 
-            PdfSharp.Pdf.PdfDocument pdf = PdfGenerator.GeneratePdf(_HTMLstring, PdfSharp.PageSize.A4);
+            PdfSharp.Pdf.PdfDocument pdf = PdfGenerator.GeneratePdf(_HTMLstring, PdfSharp.PageSize.A4, 60);
 
-            string appPath = System.Reflection.Assembly.GetExecutingAssembly().Location;
-            //Console.WriteLine(appPath);
-            var directory = System.IO.Path.GetDirectoryName(appPath);
-
-            string filePath = directory + @"\" + "Result.pdf";
-
-           
-            pdf.Save(filePath);
+                       
+            pdf.Save(destination_file);
 
             Console.WriteLine("Ready writing PDF file to disk!");
 
