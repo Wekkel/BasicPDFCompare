@@ -23,7 +23,7 @@ The texts found in both sourcefile PDFs is compared with GoogleDiffMatchPatch (d
 
 The result is converted into HTML to get a color coded result. Insertions marked green and deletions in red with strikethrough.
 
-The HTML is cleaned on a couple of points so that conversion into PDF does not result in loss of the color scheme. Basically, (i) a <head> is added to the HTML with CSS style elements for insertions (green) and deletions (red) and (ii) the existing <del> and <ins> tags are cleaned from style content.
+The HTML is cleaned on a couple of points so that conversion into PDF does not result in loss of the color scheme. Basically, (i) a <head> is added to the HTML with CSS style elements for insertions (green) and deletions (red) and (ii) the existing < del > and < ins > tags are cleaned from style content.
 
 Subsequently, the HTML is converted into and saved as a PDF file with HTML Renderer and PdfSharp (could not use iTextSharp because the color coding gets lost along the way).
 
