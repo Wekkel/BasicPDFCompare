@@ -32,7 +32,7 @@ Subsequently, the HTML is converted into and saved as a PDF file with HTML Rende
 
 License
 
-The code is licensed in accordance with the  mandatory requirements of the licenses applicable to the software referenced in this code (i.e., iTextSharp, PdfSharp, HtmlRenderer and GoogleDiffMatchPatch).
+The code is licensed in accordance with the  mandatory requirements of the licenses applicable to the software referenced in this code (i.e., iTextSharp (https://www.nuget.org/packages/iTextSharp/5.5.9), PdfSharp and HtmlRenderer (https://www.nuget.org/packages/HtmlRenderer.PdfSharp) and GoogleDiffMatchPatch (https://github.com/google/diff-match-patch/tree/master/csharp)). Insofar this code is not subjec to such mandatory licence, please consider it fully free.
 
 Desired options
 
